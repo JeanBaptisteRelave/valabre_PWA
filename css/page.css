@@ -1,0 +1,27 @@
+#page{
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+}
+
+#page h1{
+    font-size: 15pt;
+}
+
+.but_call{
+    background-color: rgb(204, 79, 79);
+    color: white;
+    width: 90%;
+    margin-left: 5%;
+    border-radius: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.but_call:hover{
+    box-shadow: 0em 0em 0.3em rgba(0, 0, 0, 0.438);
+}
+
+#map { height: 80vh; }

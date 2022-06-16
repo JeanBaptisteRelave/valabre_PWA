@@ -1,0 +1,75 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+crossorigin=""/>
+
+<link rel="stylesheet" href="../css/page.css">
+
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+crossorigin=""></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<div id="page"> <div id="map"></div> </div>
+
+<script>
+    var json_dfci;
+    var json_dfci2;
+    var map = L.map('map').setView([51.505, -0.09], 13);
+    //map.options.minZoom = 10;
+
+    // Déclaration de la variable Map, positionnement et zoom initial
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    // Afficher la position de l'appareil sur la carte
+    function onLocationFound(e) {
+        var radius = e.accuracy;
+
+        L.marker(e.latlng).addTo(map)
+            .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+        L.circle(e.latlng, radius).addTo(map);
+    }
+
+    // Afficher les carroyages DFCI sur la carte
+    $.getJSON("../DFCI/dfci.geojson", function(json) {
+        json_dfci = L.geoJSON(json, {
+            onEachFeature: function( feature, layer){
+                layer.bindPopup('<h1>'+feature.properties.name+'</h1>')
+            },
+            style: {
+                weight: 1,
+        }}).addTo(map);
+    });
+
+    // Afficher les carroyages DFCI sur la carte
+    $.getJSON("../DFCI/dfci2.geojson", function(json) {
+        json_dfci2 = L.geoJSON(json, {
+            onEachFeature: function( feature, layer){
+                layer.bindPopup('<h1>'+feature.properties.name+'</h1>')
+            },
+        }).addTo(map);
+    });
+
+    // Afficher le plus petit carroyage lors d'un zoom
+    map.on("zoomend", function () {
+        var newMapZoom = map.getZoom();
+
+        if (newMapZoom >= 11) {
+            map.addLayer(json_dfci);
+            map.removeLayer(json_dfci2);
+        } else {
+            map.addLayer(json_dfci2);
+            map.removeLayer(json_dfci);
+        }
+    });
+
+    // Localiser l'appareil
+    map.locate({setView: true, maxZoom: 16});
+    map.on('locationfound', onLocationFound);
+</script>

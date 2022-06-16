@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valabre App</title>
+
+    <link rel="manifest" href="./manifest.json"/>
+    <script>
+        window.addEventListener('load', () => {
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker.register('/sw.js');
+            }
+        })
+    </script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="css/main.css">
+    
+    <script async src="js/main.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Valabre Application</h1>
+    </header>
+
+    <div id="body_div"></div>
+
+    <footer>
+        <nav>
+            <span onclick="changePage('urgence')"><i class="material-icons">call</i><br/>Urgence</span>
+            <span onclick="changePage('carte')"><i class="material-icons">pin_drop</i><br/>Carte</span>
+            <span onclick="changePage('infos')"><i class="material-icons">info</i><br/>Infos</span>
+        </nav>
+    </footer>
+</body>
+</html>
